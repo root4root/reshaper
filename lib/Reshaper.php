@@ -1,5 +1,4 @@
 <?php
-
 namespace root4root\Reshaper;
 
 require_once 'ReshaperData.php';

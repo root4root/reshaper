@@ -2,6 +2,9 @@
 
 namespace root4root\Reshaper;
 
+use root4root\Reshaper\ReshaperData;
+use root4root\Reshaper\ProcessorInterface;
+
 class Processor_s implements ProcessorInterface
 {
     public $data = null;
@@ -21,7 +24,7 @@ class Processor_s implements ProcessorInterface
         foreach ($rule['operations'] AS $key=>$operation) {
             $nextcol = $rule['columns'][$key+1];
 
-            if ($operation == '&') {
+            if ($operation == '&' || $operation == '*') {
                 $result = $result && $this->isEmpty($this->typecast($nextcol));
             } else {
                 $result = $result || $this->isEmpty($this->typecast($nextcol));
