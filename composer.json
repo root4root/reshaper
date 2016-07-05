@@ -14,7 +14,7 @@
     },
     "autoload": {
        "psr-4": {
-          "root4root\\reshaper\\": "reshaper/"
+          "root4root\\reshaper\\": "lib/"
         }
     }
 }
