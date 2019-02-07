@@ -1,5 +1,9 @@
-### Introduction
-Reshaper implements primitive language which helps transform arrays (rows) i.e. exclude some values (members) or mix them. As a result, you could get array that bigger or smaller than original one. 
+# Reshaper 
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) 
+[![Build Status](https://travis-ci.org/root4root/reshaper.svg?branch=master)](https://travis-ci.org/root4root/reshaper)
+
+Implements primitive language which helps transform arrays (rows) i.e. exclude some values (members) or mix them. As a result, you could get array that bigger or smaller than original one. 
 
 Library was developed for convinient way to filtering data came from xlsx parser, or any. Language simplicity allows to involve end customers, so they can write filters without help from programmers. That's why A,B,C etc as columns names. Digits are also acceptible, but indexes begins from 1. First element, second and so on.
 
