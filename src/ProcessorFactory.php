@@ -1,12 +1,12 @@
 <?php
-namespace root4root\Reshaper;
+namespace Root4root\Reshaper;
 
 use \Exception as Exception;
 
 class ProcessorFactory
 {
     private static $instances = [];
-    private static $path = 'processors/Processor_';
+    private static $path = 'Processors/Processor_';
     private static $data = null;
         
     public static function checkClass($processor)
@@ -14,13 +14,15 @@ class ProcessorFactory
         $filename = dirname(__FILE__) . '/'. self::$path . $processor . '.php';
         
         if (file_exists($filename) === false) {
-            throw new Exception('Processor file not found');
+            throw new Exception('Processor file not found.');
         } else {
             require_once($filename);
         }
         
-        if (class_exists(__NAMESPACE__ . '\Processor_' . $processor, false) === false) {
-            throw new Exception('Processor class not found');
+        $className = __NAMESPACE__ . '\Processors\Processor_' . $processor;
+        
+        if (class_exists($className, false) === false) {
+            throw new Exception('Processor class not found.');
         }
 
         return true;
@@ -31,7 +33,7 @@ class ProcessorFactory
         if (empty(self::$instances[$processor])) {
             
             $classname = 'Processor_' . $processor;
-            $absClassname = __NAMESPACE__ . '\\' . $classname;
+            $absClassname = __NAMESPACE__ . '\\Processors\\' . $classname;
             
             if (class_exists($absClassname, false)) {
                 $processorObj = new $absClassname();
@@ -59,7 +61,7 @@ class ProcessorFactory
     {
         self::$data = $data;
         
-        foreach (self::$instances AS $instance) {
+        foreach (self::$instances as $instance) {
             $instance->setData($data);
         }
     }

@@ -1,5 +1,5 @@
 <?php
-namespace root4root\Reshaper;
+namespace Root4root\Reshaper;
 
 class ReshaperData
 {
@@ -14,6 +14,8 @@ class ReshaperData
         } else {
             return false;
         }
+        
+        return true;
     }
     
     public function getData()
@@ -30,7 +32,7 @@ class ReshaperData
         }
     }
     
-    public function setResult($result)
+    public function setResultCol($result)
     {
         $this->result[$this->currentCol] = $result;
     }

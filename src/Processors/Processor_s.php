@@ -1,9 +1,7 @@
 <?php
+namespace Root4root\Reshaper\Processors;
 
-namespace root4root\Reshaper;
-
-use root4root\Reshaper\ReshaperData;
-use root4root\Reshaper\ProcessorInterface;
+use Root4root\Reshaper\ReshaperData;
 
 class Processor_s implements ProcessorInterface
 {
@@ -21,13 +19,13 @@ class Processor_s implements ProcessorInterface
     {
         $result = $this->isEmpty($this->typecast($rule['columns'][0]));
         
-        foreach ($rule['operations'] AS $key=>$operation) {
-            $nextcol = $rule['columns'][$key+1];
+        foreach ($rule['operations'] as $key => $operation) {
+            $nextCol = $rule['columns'][$key + 1];
 
             if ($operation == '&' || $operation == '*') {
-                $result = $result && $this->isEmpty($this->typecast($nextcol));
+                $result = $result && $this->isEmpty($this->typecast($nextCol));
             } else {
-                $result = $result || $this->isEmpty($this->typecast($nextcol));
+                $result = $result || $this->isEmpty($this->typecast($nextCol));
             }
         }
         return $result;
@@ -37,11 +35,11 @@ class Processor_s implements ProcessorInterface
     {
         $result = $this->typecast($rule['columns'][0]);
         
-        foreach ($rule['operations'] AS $key=>$operation) {
-            $nextcol = $rule['columns'][$key+1];
-            $result .= ' ' . $this->typecast($nextcol);
+        foreach ($rule['operations'] as $key => $operation) {
+            $nextCol = $rule['columns'][$key + 1];
+            $result .= ' ' . $this->typecast($nextCol);
         }
-        $this->data->setResult($result);
+        $this->data->setResultCol($result);
         
         return true;
     }
@@ -51,10 +49,11 @@ class Processor_s implements ProcessorInterface
         if (! empty($this->cache[$key])) {
             return $this->cache[$key];
         }
-        $realcol = trim($this->data->getCol($key));
-        $this->cache[$key] = $realcol;
         
-        return $realcol;
+        $realCol = trim($this->data->getCol($key));
+        $this->cache[$key] = $realCol;
+        
+        return $realCol;
     }
     
     public function isEmpty($col = '')
@@ -65,6 +64,4 @@ class Processor_s implements ProcessorInterface
             return true;
         }
     }
-    
-    
 }

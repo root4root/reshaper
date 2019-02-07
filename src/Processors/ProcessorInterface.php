@@ -1,6 +1,7 @@
 <?php
+namespace Root4root\Reshaper\Processors;
 
-namespace root4root\Reshaper;
+use Root4root\Reshaper\ReshaperData;
 
 interface ProcessorInterface
 {

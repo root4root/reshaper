@@ -1,9 +1,8 @@
 <?php
-namespace root4root\Reshaper;
+namespace Root4root\Reshaper;
 
-require_once 'ReshaperData.php';
-require_once 'ProcessorFactory.php';
-require_once 'processors/ProcessorInterface.php';
+use Root4root\Reshaper\ReshaperData;
+use Root4root\Reshaper\ProcessorFactory;
 
 class Reshaper
 {
@@ -13,27 +12,26 @@ class Reshaper
     {
         $this->config = $configurator->getConfig();
     }
-    
-    
+       
     public function parseRow(array $row)
     {
-        if (empty($row)) {
-            return false;
-        }
-        
         $data = new ReshaperData();
+        
+        if (empty($row)) {
+            return $data;
+        }
         
         $data->setData($row);
         ProcessorFactory::newData($data);
         
-        foreach ($this->config['required'] AS $rule) {
+        foreach ($this->config['required'] as $rule) {
             $processor = ProcessorFactory::getProcessor($rule['type']);
             if ($processor->requiredCol($rule) === false) {
-                return false;
+                return $data;
             }
         }
    
-        foreach ($this->config['fields'] AS $rule) {
+        foreach ($this->config['fields'] as $rule) {
             $processor = ProcessorFactory::getProcessor($rule['type']);
             $processor->processCol($rule);
             $data->nextCol();        

@@ -1,28 +1,36 @@
-### What this all about?
-Imagine that you have an array and at the same time you are trying to create a new one with the custom field from it, including mixing. This might be very helpful if you are working with some data sources, and want to fit the data under a specific format. Let’s say, you have a price list and you need to update your database in accordance with it. To make this possible you need to reshape data to fit database schema. Hence, the name.
+### Introduction
+Reshaper implements primitive language which helps transform arrays (rows) i.e. exclude some values (members) or mix them. As a result, you could get array that bigger or smaller than original one. 
+
+Library was developed for convinient way to filtering data came from xlsx parser, or any. Language simplicity allows to involve end customers, so they can write filters without help from programmers. That's why A,B,C etc as columns names. Digits are also acceptible, but indexes begins from 1. First element, second and so on.
+
 
 ### Quick examle
 ```php
+require_once ('vendor/autoload.php');
+
+use Root4root\Reshaper\Configurator;
+use Root4root\Reshaper\Reshaper;
+
 $fields = ['(A)i','(B)s', '(B+C)s'];
-$required = ['(A)i', '(G|H|I)r(/^(?:\s*)[1-9,\+]+(?:\s*)$/)'];
-$data = [1, 'PARTNUMBER', 'Part.333', 'Description', 'foo1', 'foo2', '+', 0, 0];
+$requiredCols = ['(A)i', '(G|H|I)r(/^(?:\s*)[1-9,\+]+(?:\s*)$/)'];
 
-$obj = new Configurator();
-$reshaper = new Reshaper($obj->createConfig($fields, $required));
+$dataRow = [1, 'PARTNUMBER', 'Part.333', 'Description', 'foo1', 'foo2', '+', 0, 0];
 
-$result = $reshaper->parseRow($data);
+$config = new Configurator($fields, $requiredCols);
+$reshaper = new Reshaper($config);
 
-if ($result !== false) {
-    print_r($result->getResult());
-}
+$output = $reshaper->parseRow($dataRow);
+
+print_r($output->getResult());
+
 /*
-* Array
-* (
-*     [0] => 1
-*     [1] => PARTNUMBER
-*     [2] => PARTNUMBER Part.333
-* )
-*/
+ * Array
+ * (
+ *     [0] => 1
+ *     [1] => PARTNUMBER
+ *     [2] => PARTNUMBER Part.333
+ * )
+ */
 
 ```
 ### Explanation
@@ -46,7 +54,7 @@ Each type handles with certain processor, with its own validation and filed rule
 
 You can specify columns by number, starting from 1 (first). Example: '(2+3)s' == '(B+C)s'
 
-##### Required array syntax ($required in example)
+##### Required array syntax ($requiredCols in example)
 ###### (column)type(extra) 
 
 Columns separators: |,& (or +,* respectevly).

@@ -1,6 +1,7 @@
 <?php
+namespace Root4root\Reshaper\Processors;
 
-namespace root4root\Reshaper;
+use Root4root\Reshaper\ReshaperData;
 
 class Processor_i implements ProcessorInterface
 {
@@ -18,13 +19,13 @@ class Processor_i implements ProcessorInterface
     {
         $result = $this->isValid($this->typecast($rule['columns'][0]));
         
-        foreach ($rule['operations'] AS $key=>$operation) {
-            $nextcol = $rule['columns'][$key+1];
+        foreach ($rule['operations'] as $key => $operation) {
+            $nextCol = $rule['columns'][$key + 1];
 
             if ($operation == '&') {
-                $result = $result && $this->isValid($this->typecast($nextcol));
+                $result = $result && $this->isValid($this->typecast($nextCol));
             } else {
-                $result = $result || $this->isValid($this->typecast($nextcol));
+                $result = $result || $this->isValid($this->typecast($nextCol));
             }
         }
         return $result;
@@ -34,23 +35,23 @@ class Processor_i implements ProcessorInterface
     {
         $result = $this->typecast($rule['columns'][0]);
         
-        foreach ($rule['operations'] AS $key=>$operation) {
-            $nextcol = $rule['columns'][$key+1];
+        foreach ($rule['operations'] as $key => $operation) {
+            $nextCol = $rule['columns'][$key + 1];
             
             switch ($operation) {
                 case '+':
-                    $result += $this->typecast($nextcol);
+                    $result += $this->typecast($nextCol);
                     break;
                 case '-':
-                    $result -= $this->typecast($nextcol);
+                    $result -= $this->typecast($nextCol);
                     break;
                 case '*':
-                    $result *= $this->typecast($nextcol);
+                    $result *= $this->typecast($nextCol);
                     break;
                 case '/':
-                    $nexctolVal = $this->typecast($nextcol);
-                    if ($nexctolVal != 0) {
-                        $result =  round($result/$nexctolVal);
+                    $nextColVal = $this->typecast($nextCol);
+                    if ($nextColVal != 0) {
+                        $result =  round($result / $nextColVal);
                     } else {
                         $result = 0;
                     }
@@ -59,10 +60,10 @@ class Processor_i implements ProcessorInterface
         }
         
         if (! empty($rule['extra'])) {
-            $result = round($result + $result/100*$rule['extra']);
+            $result = round($result + $result / 100 * $rule['extra']);
         }
                 
-        $this->data->setResult($result);
+        $this->data->setResultCol($result);
         
         return true;
     }
@@ -73,13 +74,13 @@ class Processor_i implements ProcessorInterface
             return $this->cache[$key];
         }
         
-        $rawcol = $this->data->getCol($key);
-        $rawcol = preg_replace(array('/[^0-9.,]/', '/,/'), array('','.'), $rawcol);
-        $realcol = (int)$rawcol;
+        $rawCol = $this->data->getCol($key);
+        $rawCol = preg_replace(['/[^0-9.,]/', '/,/'], ['','.'], $rawCol);
+        $realCol = (int)$rawCol;
         
-        $this->cache[$key] = $realcol;
+        $this->cache[$key] = $realCol;
 
-        return $realcol;
+        return $realCol;
     }
     
     public function isValid($col = 0)
